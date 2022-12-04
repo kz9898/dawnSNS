@@ -46,7 +46,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+
+     protected function validator(array $data)
     {
         return Validator::make($data, [
             'username' => 'required|string|max:255',
@@ -54,6 +55,8 @@ class RegisterController extends Controller
             'password' => 'required|string|min:4|confirmed',
         ]);
     }
+
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -78,14 +81,15 @@ class RegisterController extends Controller
     public function register(Request $request){
         if($request->isMethod('post')){
             $data = $request->input();
-
+            $this->validator($request->all())->validate();
             $this->create($data);
             return redirect('added');
         }
         return view('auth.register');
     }
 
-    public function added(){
+
+    public function added(Request $request){
         return view('auth.added');
     }
 }
